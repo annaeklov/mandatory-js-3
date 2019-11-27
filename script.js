@@ -1,19 +1,25 @@
+let h3 = document.querySelector(".bottomCont h3");
+const select = document.querySelector(".topSelect");
+const refreshBtn = document.querySelector(".material-icons");
+let bottomCont = document.querySelector(".bottomCont");
+let breedURL;
+
 if (window.location.hash === "") {
     getRandomPics();
+
+} else if (window.location.hash !== ""){
+    breedURL = window.location.hash.substr(1);
+    h3.textContent = breedURL;
+    getBreeds(breedURL);
 }
 
-
-// HÄMTAR LISTAN
-
+// HÄMTAR LISTAN MED HUNDAR FRÅN SERVERN
 axios.get("https://dog.ceo/api/breeds/list/all")
     .then((response) => (response.data.message))
     .then((allDogs) => renderDropdown(allDogs));
 
 
-// RENDER DROPDOWN
-
-const select = document.querySelector("select");
-
+// RENDERAR DROPDOWN
 let renderDropdown = allDogs => {
     for (let breeds in allDogs) {
         let option = document.createElement("option");
@@ -23,17 +29,18 @@ let renderDropdown = allDogs => {
     }
 }
 
-// HÄMTAR BILDER
-
+// HÄMTAR BILDER PÅ ALLA HUNDAR FRÅN SERVERN
 function getRandomPics() {
-    axios.get("https://dog.ceo/api/breeds/image/random/3")
+    if (window.location.hash === ""){
+        axios.get("https://dog.ceo/api/breeds/image/random/3")
         .then((response) => (response.data.message))
         .then((picsAllDogs) => renderAllDogsPics(picsAllDogs));
+    } else {
+        getBreeds(window.location.hash.substr(1));
+    }
 }
 
-// RENDER PICS
-
-
+// RENDERAR BILDERNA
 let renderAllDogsPics = picsAllDogs => {
     const picCont = document.querySelector(".picContainer");
     picCont.innerHTML = "";
@@ -45,28 +52,54 @@ let renderAllDogsPics = picsAllDogs => {
     }
 }
 
-// REFRESHAR BILDERNA
-
-const refreshBtn = document.querySelector(".material-icons");
+// REFRESHA BILDERNA
 refreshBtn.addEventListener("click", getRandomPics);
 
-let h3 = document.querySelector(".bottomCont h3");
 
 // CHOOSE BREED
-function getBreeds() {
-    window.location.hash = this.value;
-    let breedsPic = 'https://dog.ceo/api/breed/' + this.value + '/images/random/3';
+select.addEventListener("change", function (){
+    getBreeds(this.value);
+});
+
+function getBreeds(value) {
+    window.location.hash = value;
+    let breedsPic = 'https://dog.ceo/api/breed/' + value + '/images/random/3';
 
     axios.get(breedsPic)
         .then((response) => (response.data.message))
-        .then((picsAllDogs) => renderAllDogsPics(picsAllDogs));
-
-    h3.textContent = this.value.toUpperCase();
-    /* select.style.display = "none"; */
-
+        .then((picsAllDogs) => renderAllDogsPics(picsAllDogs))
+/*         .then(getSubBreeds(value));
+ */
+    h3.textContent = value;
 }
 
-select.addEventListener("change", getBreeds);
+// HÄMTAR SUB-BREEDS
+/* function getSubBreeds(breed){
 
-// Ändra så refresh-knappen på breed-sidan renderar bilder på rätt breed
-// Skapa en "tillbaka till startsidan-knapp" på varje breed-sida
+    axios.get('https://dog.ceo/api/breed/' + breed + '/all')
+    .then((response) => (response.data.message))
+    .then((breed) => renderSubBreeds(breed));
+} */
+
+
+// RENDERAR DROPDOWN-NEDRE
+
+/* let bottomSelect = document.createElement("select");
+bottomCont.appendChild(bottomSelect);
+
+//loop här
+    let bottomOption = document.createElement("option");
+    bottomOption.textContent = 
+    bottomOption.setAttribute("href", //URL);
+    bottomSelect.append(bottomOption); */
+
+/* 
+
+    let renderDropdown = allDogs => {
+        for (let breeds in allDogs) {
+            let option = document.createElement("option");
+            option.textContent = breeds;
+            option.setAttribute("href", 'https://dog.ceo/api/breed/#' + breeds + '/images/random/3');
+            select.appendChild(option);
+        }
+    } */

@@ -9,11 +9,14 @@ let picCont = document.querySelector(".picContainer");
 
 let breedURL;
 let subBreedURL;
+window.onhashchange = function() { 
+    console.log("Här ändrar jag i adressfältet");
+}
 
 /*-----------------NÄR SIDAN LADDAS IN---------------*/
 /*------------- 1. IF - startsida -------------------*/
 /*------------- 2. ELSE IF - hundras vald -----------*/
-/*------------- 3. ELSE - under-hundras vald -------EJ KLAR-*/ 
+/*------------- 3. ELSE - under-hundras vald --------*/ 
 
 if (window.location.hash === "") {
     console.log("random")
@@ -33,9 +36,6 @@ else if (window.location.hash.includes("-")) {
     console.log(subBreedURL);
     getSubBreedsList(breedURL);
     getSubBreedsPics(subBreedURL);
- /*     h3.textContent = breedURL + "-" subBreedURL;  */
-
-   
 }
 
 
@@ -76,11 +76,13 @@ function getRandomPics() {
         axios.get("https://dog.ceo/api/breeds/image/random/3")
             .then((response) => (response.data.message))
             .then((picsAllDogs) => renderAllDogsPics(picsAllDogs));
-    } else if (window.location.hash.includes !== "-") {
+    } else if (!window.location.hash.includes("-")) {
         getBreedsPics(window.location.hash.substr(1));
-    }  /* else{
+    }  else if (window.location.hash.includes("-")){
         getSubBreedsPics(window.location.hash.substr(1).split("-")[1]);
-    }  */
+
+        console.log("fatatatatat ej")
+    } 
 }
 
 // 4. RENDERAR UT BILDERNA

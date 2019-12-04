@@ -111,7 +111,7 @@ select.addEventListener("change", function () {
 /*------------- 3. GET valda hundrasens underras-lista --------------*/
 /*------------- 4. Renderar valda hundrasens underras-dropdown ------*/
 /*------------- 5. Eventlyssnare: refreshar hundras-bilderna --------*/
-/*------------- 6. Eventlyssnare: när en hundras underras väljs ----EJ KLAR--*/
+/*------------- 6. Eventlyssnare: när en hundras underras väljs -----*/
 
 
 // 1. HÄMTAR RANDOM BILDER PÅ VALDA HUNDRASEN
@@ -158,9 +158,6 @@ let renderSubBreeds = subBreeds => {
         console.log(subBreed); // Sub-breed en och en
         let bottomOption = document.createElement("option");
         bottomOption.textContent = subBreed;
-
-        /*         bottomOption.setAttribute("href", 'https://dog.ceo/api/breed/' + breedURL + '/' + subBreedURL + '/images/random/3');
-         */
         bottomSelect.append(bottomOption);
     }
 
@@ -183,9 +180,9 @@ bottomSelect.addEventListener("change", function () {
 
 
 /*--------------NÄR EN UNDER-HUNDRAS HAR VALTS--------------------*/
-/*------------- 1. GET valda under-hundrasens bilder ------------EJ KLAR--*/
-/*------------- 2. Renderar ut valda under-hundrasens bilder ----EJ KLAR--*/
-/*------------- 3. Eventlyssnare: refreshar under-hundras-bilderna ------------EJ KLAR--*/
+/*------------- 1. GET valda under-hundrasens bilder -------------*/
+/*------------- 2. Renderar ut valda under-hundrasens bilder ------*/
+/*------------- 3. Eventlyssnare: refreshar under-hundras-bilderna -------------*/
 
 
 

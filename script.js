@@ -9,16 +9,13 @@ let picCont = document.querySelector(".picContainer");
 
 let breedURL;
 let subBreedURL;
-window.onhashchange = function() { 
-    console.log("Här ändrar jag i adressfältet");
-}
 
 /*-----------------NÄR SIDAN LADDAS IN---------------*/
 /*------------- 1. IF - startsida -------------------*/
 /*------------- 2. ELSE IF - hundras vald -----------*/
 /*------------- 3. ELSE - under-hundras vald --------*/ 
 
-if (window.location.hash === "") {
+ if (window.location.hash === "") {
     console.log("random")
     getRandomPics();
 } else if (!window.location.hash.includes("-")) {
@@ -37,7 +34,6 @@ else if (window.location.hash.includes("-")) {
     getSubBreedsList(breedURL);
     getSubBreedsPics(subBreedURL);
 }
-
 
 /*--------------------STARTSIDA--------------------------*/
 /*------------- 1. GET alla hundraser -------------------*/
@@ -80,8 +76,6 @@ function getRandomPics() {
         getBreedsPics(window.location.hash.substr(1));
     }  else if (window.location.hash.includes("-")){
         getSubBreedsPics(window.location.hash.substr(1).split("-")[1]);
-
-        console.log("fatatatatat ej")
     } 
 }
 
@@ -169,7 +163,7 @@ let renderSubBreeds = subBreeds => {
     }
 }
 
-// 5. Eventlyssnare: refresha tbilder (se ovan)
+// 5. Eventlyssnare: refresha bilder (se ovan)
 
 // 6. VÄLJA SUB-BREED I DROPDOWN-NEDRE
 bottomSelect.addEventListener("change", function () {
@@ -179,19 +173,17 @@ bottomSelect.addEventListener("change", function () {
 });
 
 
-/*--------------NÄR EN UNDER-HUNDRAS HAR VALTS--------------------*/
-/*------------- 1. GET valda under-hundrasens bilder -------------*/
-/*------------- 2. Renderar ut valda under-hundrasens bilder ------*/
-/*------------- 3. Eventlyssnare: refreshar under-hundras-bilderna -------------*/
-
-
+/*--------------NÄR EN UNDER-HUNDRAS HAR VALTS------------------------*/
+/*------------- 1. GET valda under-hundrasens bilder -----------------*/
+/*------------- 2. Renderar ut valda under-hundrasens bilder ---------*/
+/*------------- 3. Eventlyssnare: refreshar under-hundras-bilderna ---*/
 
 // 1. HÄMTAR RANDOM BILDER PÅ VALDA SUB-BREED
 function getSubBreedsPics(value){
    
 /*     let breedHash = window.location.hash;
         breedHash = breedHash.substr(1);
-        console.log(breedHash); // senaste valda hundrasen */
+        console.log(breedHash); // senaste valda hundrasen OBS, behövs?? */
         window.location.hash = "";
         window.location.hash =  breedURL + "-" + value;
     
@@ -202,7 +194,6 @@ function getSubBreedsPics(value){
     .then((picsAllDogs) => renderAllDogsPics(picsAllDogs))
 
     h3.textContent = breedURL +  "-" + value ;
-
 }
 
 // 2. Funktion: renderAllDogsPics (se ovan)

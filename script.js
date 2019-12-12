@@ -1,5 +1,3 @@
-/*----------------HÄMTAR FRÅN HTML-------------------*/
-
 let h3 = document.querySelector(".bottomCont h3");
 let select = document.querySelector(".topSelect");
 let refreshBtn = document.querySelector(".material-icons");
@@ -10,47 +8,25 @@ let picCont = document.querySelector(".picContainer");
 let breedURL;
 let subBreedURL;
 
-/*-----------------NÄR SIDAN LADDAS IN---------------*/
-/*------------- 1. IF - startsida -------------------*/
-/*------------- 2. ELSE IF - hundras vald -----------*/
-/*------------- 3. ELSE - under-hundras vald --------*/ 
-
- if (window.location.hash === "") {
-    console.log("random")
+if (window.location.hash === "") {
     getRandomPics();
 } else if (!window.location.hash.includes("-")) {
-    console.log(window.location.hash.includes("-"))
-    console.log("en hund woff")
     breedURL = window.location.hash.substr(1); // hundrasen
     h3.textContent = breedURL;
     getBreedsPics(breedURL);
-}
-else if (window.location.hash.includes("-")) {
-    console.log("hej");
-    breedURL =  window.location.hash.slice(1).split("-")[0];
-    console.log(breedURL);
+} else if (window.location.hash.includes("-")) {
+    breedURL = window.location.hash.slice(1).split("-")[0];
     subBreedURL = window.location.hash.slice(0).split("-")[1];
-    console.log(subBreedURL);
     getSubBreedsList(breedURL);
     getSubBreedsPics(subBreedURL);
 }
 
-/*--------------------STARTSIDA--------------------------*/
-/*------------- 1. GET alla hundraser -------------------*/
-/*------------- 2. Renderar ut dropdown -----------------*/
-/*------------- 3. GET alla bilder ----------------------*/
-/*------------- 4. Renderar ut alla bilder --------------*/
-/*------------- 5. Eventlyssnare: refreshar bilderna ----*/
-/*------------- 6. Eventlyssnare: när en hundras väljs --*/
-
-
-// 1. HÄMTAR LISTAN MED ALLA BREEDS FRÅN SERVERN
+// HÄMTAR LISTAN MED ALLA BREEDS FRÅN SERVERN
 axios.get("https://dog.ceo/api/breeds/list/all")
     .then((response) => (response.data.message))
     .then((allDogs) => renderDropdown(allDogs));
 
-
-// 2. RENDERAR DROPDOWN
+// RENDERAR DROPDOWN
 let renderDropdown = allDogs => {
     for (let breeds in allDogs) {
         let option = document.createElement("option");
@@ -66,7 +42,7 @@ let renderDropdown = allDogs => {
     }
 }
 
-// 3. HÄMTAR BILDER PÅ ALLA HUNDAR FRÅN SERVERN
+//  HÄMTAR BILDER PÅ ALLA HUNDAR FRÅN SERVERN
 function getRandomPics() {
     if (window.location.hash === "") {
         axios.get("https://dog.ceo/api/breeds/image/random/3")
@@ -74,12 +50,12 @@ function getRandomPics() {
             .then((picsAllDogs) => renderAllDogsPics(picsAllDogs));
     } else if (!window.location.hash.includes("-")) {
         getBreedsPics(window.location.hash.substr(1));
-    }  else if (window.location.hash.includes("-")){
+    } else if (window.location.hash.includes("-")) {
         getSubBreedsPics(window.location.hash.substr(1).split("-")[1]);
-    } 
+    }
 }
 
-// 4. RENDERAR UT BILDERNA
+//  RENDERAR UT BILDERNA
 let renderAllDogsPics = picsAllDogs => {
     picCont.innerHTML = "";
 
@@ -90,25 +66,16 @@ let renderAllDogsPics = picsAllDogs => {
     }
 }
 
-// 5. EVENTLYSSNARE. REFRESHA BILDERNA PÅ KNAPPEN
+// EVENTLYSSNARE. REFRESHA BILDERNA PÅ KNAPPEN
 refreshBtn.addEventListener("click", getRandomPics);
 
 
-// 6. EVENTLYSSNARE. VÄLJA HUNDRAS I DROPDOWN
+// EVENTLYSSNARE. VÄLJA HUNDRAS I DROPDOWN
 select.addEventListener("change", function () {
     getBreedsPics(this.value);
 });
 
-/*--------------NÄR EN HUNDRAS HAR VALTS-----------------------------*/
-/*------------- 1. GET valda hundrasens bilder ----------------------*/
-/*------------- 2. Renderar ut valda hundrasens bilder --------------*/
-/*------------- 3. GET valda hundrasens underras-lista --------------*/
-/*------------- 4. Renderar valda hundrasens underras-dropdown ------*/
-/*------------- 5. Eventlyssnare: refreshar hundras-bilderna --------*/
-/*------------- 6. Eventlyssnare: när en hundras underras väljs -----*/
-
-
-// 1. HÄMTAR RANDOM BILDER PÅ VALDA HUNDRASEN
+// HÄMTAR RANDOM BILDER PÅ VALDA HUNDRASEN
 function getBreedsPics(value) {
     breedURL = value;
     window.location.hash = value;
@@ -120,20 +87,16 @@ function getBreedsPics(value) {
     h3.textContent = value;
 }
 
-// 2. Funktion: renderAllDogsPics (se ovan)
-
-
-// 3. HÄMTAR LISTAN PÅ SUB-BREED PÅ VALDA BREED
+// HÄMTAR LISTAN PÅ SUB-BREED PÅ VALDA BREED
 function getSubBreedsList(breed) {
     axios.get('https://dog.ceo/api/breed/' + breed + '/list')
         .then((response) => (response.data.message)) //hämtar det som står i message
         .then((breed) => renderSubBreeds(breed)); //kör därefter denna funktionen
 }
 
-// 4. RENDERAR DROPDOWN-NEDRE
+// RENDERAR DROPDOWN-NEDRE
 let renderSubBreeds = subBreeds => {
     bottomSelect.textContent = "";
-    console.log(subBreeds); // Array med sub-breeds
 
     if (subBreeds.length === 0) {
         bottomSelect.style.display = "none";
@@ -149,7 +112,6 @@ let renderSubBreeds = subBreeds => {
     bottomSelect.appendChild(bottomOptionDis);
 
     for (let subBreed of subBreeds) {
-        console.log(subBreed); // Sub-breed en och en
         let bottomOption = document.createElement("option");
         bottomOption.textContent = subBreed;
         bottomSelect.append(bottomOption);
@@ -163,39 +125,22 @@ let renderSubBreeds = subBreeds => {
     }
 }
 
-// 5. Eventlyssnare: refresha bilder (se ovan)
-
-// 6. VÄLJA SUB-BREED I DROPDOWN-NEDRE
+// VÄLJA SUB-BREED I DROPDOWN-NEDRE
 bottomSelect.addEventListener("change", function () {
-    console.log("hej sub-breed");
     subBreedURL = this.value
     getSubBreedsPics(this.value);
 });
 
+// HÄMTAR RANDOM BILDER PÅ VALDA SUB-BREED
+function getSubBreedsPics(value) {
+    window.location.hash = "";
+    window.location.hash = breedURL + "-" + value;
 
-/*--------------NÄR EN UNDER-HUNDRAS HAR VALTS------------------------*/
-/*------------- 1. GET valda under-hundrasens bilder -----------------*/
-/*------------- 2. Renderar ut valda under-hundrasens bilder ---------*/
-/*------------- 3. Eventlyssnare: refreshar under-hundras-bilderna ---*/
-
-// 1. HÄMTAR RANDOM BILDER PÅ VALDA SUB-BREED
-function getSubBreedsPics(value){
-   
-/*     let breedHash = window.location.hash;
-        breedHash = breedHash.substr(1);
-        console.log(breedHash); // senaste valda hundrasen OBS, behövs?? */
-        window.location.hash = "";
-        window.location.hash =  breedURL + "-" + value;
-    
     let subBreedsPicURL = 'https://dog.ceo/api/breed/' + breedURL + '/' + value + '/images/random/3';
 
     axios.get(subBreedsPicURL)
-    .then((response) => (response.data.message))
-    .then((picsAllDogs) => renderAllDogsPics(picsAllDogs))
+        .then((response) => (response.data.message))
+        .then((picsAllDogs) => renderAllDogsPics(picsAllDogs))
 
-    h3.textContent = breedURL +  "-" + value ;
+    h3.textContent = breedURL + "-" + value;
 }
-
-// 2. Funktion: renderAllDogsPics (se ovan)
-
-// 3. Eventlyssnare: refresha bilder (se ovan)
